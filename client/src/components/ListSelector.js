@@ -14,7 +14,7 @@ const ListSelector = () => {
 
     function handleAddList(event){
         store.createNewList();
-        store.loadIdNamePairs();
+        // store.loadIdNamePairs();
         console.log('hello')
     }
 

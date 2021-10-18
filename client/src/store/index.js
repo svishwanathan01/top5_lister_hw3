@@ -13,6 +13,7 @@ export const GlobalStoreContext = createContext({});
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR GLOBAL
 // DATA STORE STATE THAT CAN BE PROCESSED
 export const GlobalStoreActionType = {
+    CREATE_NEW_LIST: "CREATE_NEW_LIST",
     CHANGE_LIST_NAME: "CHANGE_LIST_NAME",
     CLOSE_CURRENT_LIST: "CLOSE_CURRENT_LIST",
     LOAD_ID_NAME_PAIRS: "LOAD_ID_NAME_PAIRS",
@@ -41,6 +42,18 @@ export const useGlobalStore = () => {
     const storeReducer = (action) => {
         const { type, payload } = action;
         switch (type) {
+            // CREATE NEW LIST
+            case GlobalStoreActionType.CREATE_NEW_LIST: {
+                return setStore({
+                    idNamePairs: payload,
+                    currentList: null,
+                    newListCounter: store.newListCounter + 1,
+                    isListNameEditActive: false,
+                    isItemEditActive: false,
+                    listMarkedForDeletion: null
+                });
+            }
+
             // LIST UPDATE OF ITS NAME
             case GlobalStoreActionType.CHANGE_LIST_NAME: {
                 return setStore({
@@ -107,12 +120,29 @@ export const useGlobalStore = () => {
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
     store.createNewList = function(){
         let new_list = {
-                        "name": "Untitled List",
+                        "name": "Untitled" + store.newListCounter,
                         "items": ["?","?","?","?","?"]
                         };
-        api.createTop5List(new_list);
+        async function asyncCreateNewList(new_list) {
+            let response = await api.createTop5List(new_list);
+            store.setCurrentList(response.data.top5List._id);
+            if (response.data.success) {
+                async function updateList(top5List) {
+                    response = await api.getTop5ListPairs();
+                    if (response.data.success) {
+                        let pairsArray = response.data.idNamePairs;
+                        storeReducer({
+                            type: GlobalStoreActionType.CREATE_NEW_LIST,
+                            payload:pairsArray,
+                        });
+                    }
+                }
+                updateList();
+            }
+        }
+        asyncCreateNewList(new_list);
     }
-    
+
     store.changeListName = function (id, newName) {
         // GET THE LIST
         async function asyncChangeListName(id) {
