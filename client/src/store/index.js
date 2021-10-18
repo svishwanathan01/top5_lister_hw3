@@ -127,7 +127,7 @@ export const useGlobalStore = () => {
             let response = await api.createTop5List(new_list);
             store.setCurrentList(response.data.top5List._id);
             if (response.data.success) {
-                async function updateList(top5List) {
+                async function updateList() {
                     response = await api.getTop5ListPairs();
                     if (response.data.success) {
                         let pairsArray = response.data.idNamePairs;
