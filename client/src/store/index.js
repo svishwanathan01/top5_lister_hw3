@@ -105,6 +105,14 @@ export const useGlobalStore = () => {
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
 
     // THIS FUNCTION PROCESSES CHANGING A LIST NAME
+    store.createNewList = function(){
+        let new_list = {
+                        "name": "Untitled List",
+                        "items": ["?","?","?","?","?"]
+                        };
+        api.createTop5List(new_list);
+    }
+    
     store.changeListName = function (id, newName) {
         // GET THE LIST
         async function asyncChangeListName(id) {
