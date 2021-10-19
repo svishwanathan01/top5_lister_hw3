@@ -1,7 +1,7 @@
 import './App.css';
 import { React } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { Banner, ListSelector, Statusbar, Workspace } from './components'
+import { Banner, ListSelector, Statusbar, Workspace, DeleteModal } from './components'
 /*
     This is our application's top-level component.
     
@@ -16,6 +16,7 @@ const App = () => {
                 <Route path="/top5list/:id" exact component={Workspace} />
             </Switch>
             <Statusbar />
+            <DeleteModal />
         </Router>
     )
 }
