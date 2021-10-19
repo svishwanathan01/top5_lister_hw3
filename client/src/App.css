@@ -320,6 +320,12 @@ input {
   text-align:center;
 }
 
+input:disabled{
+  opacity: 25%;
+  cursor: not-allowed;
+}
+
+
 /* ANIMATIONS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 [data-animation] .modal-dialog {

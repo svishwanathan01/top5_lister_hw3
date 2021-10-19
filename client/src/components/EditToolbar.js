@@ -26,27 +26,30 @@ function EditToolbar() {
     if (store.isListNameEditActive) {
         editStatus = true;
     }
+    console.log(store.hasRedoTransaction());
+    console.log(store.hasUndoTransaction());
+
     return (
         <div id="edit-toolbar">
             <div
                 disabled={editStatus}
                 id='undo-button'
                 onClick={handleUndo}
-                className={enabledButtonClass}>
+                className={enabledButtonClass + (editStatus || !store.hasUndoTransaction() ? "-disabled" : "")}>
                 &#x21B6;
             </div>
             <div
                 disabled={editStatus}
                 id='redo-button'
                 onClick={handleRedo}
-                className={enabledButtonClass}>
+                className={enabledButtonClass + (editStatus || !store.hasRedoTransaction() ? "-disabled" : "")}>
                 &#x21B7;
             </div>
             <div
                 disabled={editStatus}
                 id='close-button'
                 onClick={handleClose}
-                className={enabledButtonClass}>
+                className={enabledButtonClass + ((!editStatus && store.currentList!=null) ? "" : "-disabled")}>
                 &#x24E7;
             </div>
         </div>

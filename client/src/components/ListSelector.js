@@ -40,7 +40,8 @@ const ListSelector = () => {
                     id="add-list-button"
                     className="top5-button"
                     value="+" 
-                    onClick={handleAddList}/>
+                    onClick={handleAddList}
+                    disabled={store.isListNameEditActive}/>
                 Your Lists
             </div>
             <div id="list-selector-list">

@@ -115,8 +115,8 @@ export const useGlobalStore = () => {
             case GlobalStoreActionType.DELETE_LIST: {
                 return setStore({
                     idNamePairs: store.idNamePairs,
-                    // currentList: null,
-                    currentList: payload,
+                    currentList: null,
+                    // currentList: payload,
                     newListCounter: store.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: false,
@@ -195,6 +195,7 @@ export const useGlobalStore = () => {
             type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
             payload: {}
         });
+        tps.clearAllTransactions();
     }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
@@ -333,6 +334,13 @@ export const useGlobalStore = () => {
         store.hideDeleteListModal();
         // window.location.reload(false);
     }
+    store.hasUndoTransaction = function(){
+        return tps.hasTransactionToUndo();
+    }
+    store.hasRedoTransaction = function(){
+        return tps.hasTransactionToRedo();
+    }
+
 
     // THIS GIVES OUR STORE AND ITS REDUCER TO ANY COMPONENT THAT NEEDS IT
     return { store, storeReducer };
