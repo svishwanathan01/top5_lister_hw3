@@ -53,7 +53,8 @@ function ListCard(props) {
 
     function handleDeleteModal(event){
         event.stopPropagation();
-        store.setDeleteList(event.target.id.substring(12));
+        console.log(idNamePair.name);
+        store.setDeleteList(event.target.id.substring(12), idNamePair.name);
         store.showDeleteListModal();
     }
 
