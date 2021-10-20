@@ -49,9 +49,9 @@ export const useGlobalStore = () => {
             // CREATE NEW LIST
             case GlobalStoreActionType.CREATE_NEW_LIST: {
                 return setStore({
-                    idNamePairs: payload,
-                    currentList: null,
-                    newListCounter: store.newListCounter + 1,
+                    idNamePairs: payload.idNamePairs,
+                    currentList: payload.currentList,
+                    newListCounter: payload.newListCounter,
                     isListNameEditActive: false,
                     isItemEditActive: false,
                     listMarkedForDeletion: null,
@@ -147,16 +147,24 @@ export const useGlobalStore = () => {
                         };
         async function asyncCreateNewList(new_list) {
             let response = await api.createTop5List(new_list);
-            store.setCurrentList(response.data.top5List._id);
+
+            // store.setCurrentList(response.data.top5List._id);
             if (response.data.success) {
+                let list = response.data.top5List;
                 async function updateList() {
                     response = await api.getTop5ListPairs();
                     if (response.data.success) {
                         let pairsArray = response.data.idNamePairs;
+                        let count = store.newListCounter + 1;
                         storeReducer({
                             type: GlobalStoreActionType.CREATE_NEW_LIST,
-                            payload:pairsArray,
+                            payload:{
+                                currentList: list,
+                                idNamePairs: pairsArray,
+                                newListCounter: count
+                            },
                         });
+                        store.history.push("/top5list/" + list._id);
                     }
                 }
                 updateList();
